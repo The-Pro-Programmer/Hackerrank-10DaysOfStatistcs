@@ -1,10 +1,7 @@
 #!/bin/python3
 
-import math
-import os
-import random
-import re
-import sys
+import statistics as st
+
 
 #
 # Complete the 'interQuartile' function below.
@@ -16,28 +13,24 @@ import sys
 
 def interQuartile(values, freqs):
     # Print your answer to 1 decimal place within this function
-    expanded = []
+    iqr = 0
     n = len(values)
+    data = []
     for i in range(n):
-        for j in range(freqs[i]):
-            expanded.append(values[i])
-    expanded = sorted(expanded)
-    n = len(expanded)
-    mid = n//2
-    mid2 = mid//2
-    if n%2==0:
-        q1 = (expanded[mid2-1] + expanded[mid2])/2
-        q3 = (expanded[mid+mid2-1] + expanded[mid+mid2] )/2
+        data += [values[i]] * freqs[i]
+    data.sort()
+    n = len(data)
+    mid = n // 2
+    if n % 2 == 0:
+        q3 = st.median(data[mid:])
     else:
-        q1 = expanded[mid2]
-        q3 = expanded[mid+mid2]
-    print("{:.1f}".format(q3-q1))
+        q3 = st.median(data[mid + 1:])
+    q1 = st.median(data[:mid])
+    print(round(float(q3 - q1), 1))
+
 
 if __name__ == '__main__':
     n = int(input().strip())
-
     val = list(map(int, input().rstrip().split()))
-
     freq = list(map(int, input().rstrip().split()))
-
     interQuartile(val, freq)
